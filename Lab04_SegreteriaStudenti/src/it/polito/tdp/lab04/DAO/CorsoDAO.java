@@ -12,6 +12,61 @@ import it.polito.tdp.lab04.model.Studente;
 
 public class CorsoDAO {
 
+	private String codins;
+	private int numeroCrediti;
+	private String nome;
+	private int pd;
+	
+	
+	public CorsoDAO(String codins, int numeroCrediti, String nome, int pd) {
+		super();
+		this.codins = codins;
+		this.numeroCrediti = numeroCrediti;
+		this.nome = nome;
+		this.pd = pd;
+	}
+	
+	
+	public String getCodins() {
+		return codins;
+	}
+
+
+	public void setCodins(String codins) {
+		this.codins = codins;
+	}
+
+
+	public int getNumeroCrediti() {
+		return numeroCrediti;
+	}
+
+
+	public void setNumeroCrediti(int numeroCrediti) {
+		this.numeroCrediti = numeroCrediti;
+	}
+
+
+	public String getNome() {
+		return nome;
+	}
+
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+
+	public int getPd() {
+		return pd;
+	}
+
+
+	public void setPd(int pd) {
+		this.pd = pd;
+	}
+
+
 	/*
 	 * Ottengo tutti i corsi salvati nel Db
 	 */
