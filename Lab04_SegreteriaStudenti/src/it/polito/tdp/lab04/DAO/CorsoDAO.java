@@ -12,60 +12,6 @@ import it.polito.tdp.lab04.model.Studente;
 
 public class CorsoDAO {
 
-	private String codins;
-	private int numeroCrediti;
-	private String nome;
-	private int pd;
-	
-	
-	public CorsoDAO(String codins, int numeroCrediti, String nome, int pd) {
-		super();
-		this.codins = codins;
-		this.numeroCrediti = numeroCrediti;
-		this.nome = nome;
-		this.pd = pd;
-	}
-	
-	
-	public String getCodins() {
-		return codins;
-	}
-
-
-	public void setCodins(String codins) {
-		this.codins = codins;
-	}
-
-
-	public int getNumeroCrediti() {
-		return numeroCrediti;
-	}
-
-
-	public void setNumeroCrediti(int numeroCrediti) {
-		this.numeroCrediti = numeroCrediti;
-	}
-
-
-	public String getNome() {
-		return nome;
-	}
-
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-
-	public int getPd() {
-		return pd;
-	}
-
-
-	public void setPd(int pd) {
-		this.pd = pd;
-	}
-
 
 	/*
 	 * Ottengo tutti i corsi salvati nel Db
@@ -88,11 +34,14 @@ public class CorsoDAO {
 				int numeroCrediti = rs.getInt("crediti");
 				String nome = rs.getString("nome");
 				int periodoDidattico = rs.getInt("pd");
-
+				
+				
 				System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
 
 				// Crea un nuovo JAVA Bean Corso
 				// Aggiungi il nuovo oggetto Corso alla lista corsi
+				
+				corsi.add(new Corso(codins, numeroCrediti, nome,  periodoDidattico));
 			}
 
 			return corsi;
@@ -101,6 +50,28 @@ public class CorsoDAO {
 			// e.printStackTrace();
 			throw new RuntimeException("Errore Db", e);
 		}
+	}
+	/*
+	 * metodo per ottenere i nomi di tutti i corsi per la combo box
+	 */
+	public List<String> getNomiCorsi(){
+		
+		final String sql= "SELECT c.nome " + 
+				"FROM corso c";
+		List<String> nomiCorsi= new LinkedList<String>();
+		try {
+			Connection conn= ConnectDB.getConnection();
+			PreparedStatement st=conn.prepareStatement(sql);
+			ResultSet rs= st.executeQuery();
+			while(rs.next()) {
+				nomiCorsi.add(rs.getString("nome"));
+			}
+			
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return null;
+		
 	}
 
 	/*
