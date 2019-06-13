@@ -1,17 +1,23 @@
 package it.polito.tdp.lab04.model;
 
+import javafx.scene.control.TextField;
+
 public class Studente {
 	private int matricola;
 	private String cognome;
 	private String nome;
 	private String CDS;
 	
-	public Studente(int matricola, String cognome, String nome, String cDS) {
+	public Studente(int matricola, String cognome, String nome, String CDS) {
 		super();
 		this.matricola = matricola;
 		this.cognome = cognome;
 		this.nome = nome;
-		CDS = cDS;
+		this.CDS = CDS;
+	}
+
+	public Studente(int matricola) {
+		this.matricola= matricola;
 	}
 
 	public int getMatricola() {
@@ -42,7 +48,35 @@ public class Studente {
 		return CDS;
 	}
 
-	public void setCDS(String cDS) {
-		CDS = cDS;
+	public void setCDS(String CDS) {
+		this.CDS = CDS;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + matricola;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Studente other = (Studente) obj;
+		if (matricola != other.matricola)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return matricola + "    " + nome + "    " + cognome + "    " + CDS;
+	}
+	
 }

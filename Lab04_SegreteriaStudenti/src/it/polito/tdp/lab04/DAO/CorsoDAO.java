@@ -10,6 +10,7 @@ import java.util.List;
 import it.polito.tdp.lab04.model.Corso;
 import it.polito.tdp.lab04.model.Studente;
 
+
 public class CorsoDAO {
 
 
@@ -43,57 +44,73 @@ public class CorsoDAO {
 				
 				corsi.add(new Corso(codins, numeroCrediti, nome,  periodoDidattico));
 			}
-
-			return corsi;
-
+			conn.close();
+			
+			
 		} catch (SQLException e) {
-			// e.printStackTrace();
+			 e.printStackTrace();
 			throw new RuntimeException("Errore Db", e);
 		}
+		return corsi;
 	}
-	/*
-	 * metodo per ottenere i nomi di tutti i corsi per la combo box
-	 */
-	public List<String> getNomiCorsi(){
-		
-		final String sql= "SELECT c.nome " + 
-				"FROM corso c";
-		List<String> nomiCorsi= new LinkedList<String>();
-		try {
-			Connection conn= ConnectDB.getConnection();
-			PreparedStatement st=conn.prepareStatement(sql);
-			ResultSet rs= st.executeQuery();
-			while(rs.next()) {
-				nomiCorsi.add(rs.getString("nome"));
-			}
-			
-		}catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
-		return null;
-		
-	}
+	
 
 	/*
 	 * Dato un codice insegnamento, ottengo il corso
 	 */
 	public void getCorso(Corso corso) {
-		// TODO
+		
+		
 	}
 
 	/*
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
-	public void getStudentiIscrittiAlCorso(Corso corso) {
-		// TODO
+	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) {
+		final String sql="SELECT s.* " + 
+				"FROM studente s, iscrizione i " + 
+				"WHERE s.`matricola`=i.`matricola` AND i.codins= ?";
+		List<Studente> studentiIscritti= new LinkedList<Studente>();
+		Connection conn;
+		try {
+			conn= ConnectDB.getConnection();
+			PreparedStatement st= conn.prepareStatement(sql);
+			st.setString(1, corso.getCodins());
+			ResultSet rs= st.executeQuery();
+			while(rs.next()) {
+				studentiIscritti.add(new Studente(rs.getInt("matricola"), rs.getString("cognome"), rs.getString("nome"), rs.getString("CDS")));
+			}
+			conn.close();
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return studentiIscritti;
 	}
 
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */
-	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
-		// TODO
-		// ritorna true se l'iscrizione e' avvenuta con successo
-		return false;
+	public boolean iscriviStudenteACorso(Studente s, Corso c) {
+		String sql= "INSERT INTO iscrizione(matricola, `codins`) " + 
+				"VALUES(?, ?)";
+		Connection conn;
+		boolean iscrizione;
+		try {
+			conn= ConnectDB.getConnection();
+			PreparedStatement st= conn.prepareStatement(sql);
+			st.setInt(1, s.getMatricola());
+			st.setString(2, c.getCodins());
+			int rs= st.executeUpdate();
+			if(rs==1) {
+				 iscrizione=true;
+			}else {
+			iscrizione=false;
+			}
+			
+		}catch(SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return iscrizione;
 	}
 }

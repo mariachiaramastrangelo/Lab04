@@ -6,19 +6,20 @@ import java.sql.SQLException;
 
 public class ConnectDB {
 
-	static private final String jdbcUrl = "jdbc:mysql://localhost/iscritticorsi?user=root&password=provaprova&serverTimezone=Europe/Rome";
+	static private final String jdbcUrl = "jdbc:mysql://localhost:3306/iscritticorsi?user=root&password=provaprova&serverTimezone=Europe/Rome";
 
 	public static Connection getConnection() {
-
+		Connection connection;
 		try {
-			Connection connection = DriverManager.getConnection(jdbcUrl);
-			return connection;
-
+			connection = DriverManager.getConnection(jdbcUrl);
+			
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 			throw new RuntimeException("Cannot get a connection " + jdbcUrl, e);
 		}
+		return connection;
 	}
 
 }
